@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вечная Слава Героям ВОВ</title>
+    <script type="module" crossorigin src="/assets/index-46ebcc6d.js"></script>
+    <link rel="stylesheet" href="/assets/index-2295af9b.css">
+  </head>
+  <script>
+  // Проверяем, вернулись ли мы со страницы героя
+  if (sessionStorage.getItem('returnFromHero') === 'true') {
+    sessionStorage.removeItem('returnFromHero');
+    // Ждём загрузки React и скроллим
+    setTimeout(function() {
+      var heroesSection = document.getElementById('heroes');
+      if (heroesSection) {
+        heroesSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 500);
+  }
+</script>
+  <body>
+    <div id="root"></div>
+    <!-- Вот эту строку нужно проверить: -->
+    
+  </body>
+</html>

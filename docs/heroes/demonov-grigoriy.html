@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Небо героя: Демонов Григорий Степанович</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            overflow-x: hidden;
+            color: #1a1a1a;
+            background: linear-gradient(to bottom, #F0F9FF 0%, #E0F2FE 50%, #BAE6FD 100%);
+            min-height: 100vh;
+        }
+        .clouds-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .cloud { position: absolute; background: rgba(255, 255, 255, 0.5); border-radius: 100px; animation: float 20s infinite ease-in-out; }
+        .cloud::before, .cloud::after { content: ''; position: absolute; background: rgba(255, 255, 255, 0.5); border-radius: 100px; }
+        .cloud-1 { width: 180px; height: 55px; top: 15%; left: 5%; }
+        .cloud-1::before { width: 70px; height: 70px; top: -35px; left: 25px; }
+        .cloud-1::after { width: 90px; height: 60px; top: -25px; right: 25px; }
+        .cloud-2 { width: 200px; height: 60px; top: 50%; right: 10%; animation-delay: 3s; }
+        .cloud-2::before { width: 80px; height: 80px; top: -40px; left: 30px; }
+        .cloud-2::after { width: 100px; height: 70px; top: -30px; right: 30px; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, -15px); } }
+        
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+        
+        .back-button {
+            position: fixed; top: 20px; left: 20px; background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #d97706; border-radius: 50px; padding: 1rem 2rem;
+            font-size: 1.1rem; text-decoration: none; color: #d97706;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3); transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-family: 'Georgia', serif; z-index: 1000;
+        }
+        .back-button:hover { transform: translateX(-5px); box-shadow: 0 6px 20px rgba(217, 119, 6, 0.5); background: white; }
+        
+        .hero-page-title { text-align: center; margin: 4rem 0 3rem; font-size: clamp(2rem, 5vw, 3.5rem); color: #d97706; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); animation: titleAppear 1s ease-out; }
+        @keyframes titleAppear { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .hero-content { background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 3rem; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15); margin-bottom: 3rem; animation: contentAppear 1.2s ease-out; }
+        @keyframes contentAppear { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .photo-section { text-align: center; margin-bottom: 3rem; }
+        .photo-frame { display: inline-block; background: white; padding: 1.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(217, 119, 6, 0.2); border: 3px solid #d97706; position: relative; cursor: pointer; }
+        .photo-frame::before { content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px; border: 2px solid rgba(217, 119, 6, 0.3); border-radius: 25px; z-index: -1; }
+        .hero-photo { max-width: 100%; height: auto; max-height: 500px; border-radius: 10px; display: block; }
+        .photo-placeholder { width: 400px; height: 500px; background: linear-gradient(135deg, #E0F2FE, #BAE6FD); display: flex; align-items: center; justify-content: center; font-size: 5rem; border-radius: 10px; }
+        
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; cursor: pointer; }
+        .lightbox.active { display: flex; }
+        .lightbox img { max-width: 95%; max-height: 95%; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 2001; }
+        
+        .hero-info { margin-bottom: 3rem; }
+        .hero-info h2 { font-size: 2rem; color: #d97706; margin-bottom: 1rem; border-bottom: 3px solid rgba(217, 119, 6, 0.3); padding-bottom: 0.5rem; }
+        .info-item { margin: 1rem 0; font-size: 1.2rem; line-height: 1.8; }
+        .info-label { font-weight: bold; color: #d97706; display: inline-block; min-width: 200px; }
+        
+        .story-section { margin-bottom: 3rem; }
+        .story-section h2 { font-size: 2rem; color: #d97706; margin-bottom: 1.5rem; text-align: center; }
+        .letter-style { background: linear-gradient(to bottom, #fffbf0, #fff9e6); padding: 2.5rem; border-radius: 10px; border: 1px solid rgba(217, 119, 6, 0.2); box-shadow: inset 0 0 30px rgba(217, 119, 6, 0.05); position: relative; }
+        .letter-style::before { content: ''; position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; border: 1px solid rgba(217, 119, 6, 0.1); border-radius: 5px; pointer-events: none; }
+        .story-text { font-size: 1.15rem; line-height: 1.9; color: #1a1a1a; text-align: justify; }
+        .story-text p { margin-bottom: 1.2rem; }
+        
+        .story-poem {
+            margin: 1.5rem 0;
+            padding: 1rem 2rem;
+            border-left: 4px solid #d97706;
+            background: rgba(217, 119, 6, 0.05);
+            font-style: italic;
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .student-credit-section { text-align: right; padding: 0.5rem 1rem; margin-top: -1rem; margin-bottom: 1rem; }
+        .student-credit-section p { font-style: italic; color: #b0770a; font-size: 0.95rem; }
+        
+        .hero-footer { text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.8); border-radius: 20px; margin-top: 3rem; }
+        .hero-footer p { font-size: 1.3rem; color: #d97706; font-style: italic; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .back-button { position: fixed; top: 10px; left: 10px; padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 30px; z-index: 1000; }
+            .hero-page-title { margin: 5rem 0 1.5rem; font-size: 1.6rem; padding: 0 1rem; }
+            .hero-content { padding: 1.5rem 1rem; border-radius: 20px; margin-bottom: 2rem; }
+            .photo-section { margin-bottom: 2rem; }
+            .photo-frame { padding: 0.8rem; border-radius: 15px; }
+            .hero-photo { max-height: 350px; }
+            .photo-placeholder { width: 100%; max-width: 280px; height: 350px; font-size: 3rem; }
+            .hero-info { margin-bottom: 2rem; }
+            .hero-info h2 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+            .info-item { font-size: 1rem; line-height: 1.5; margin: 0.6rem 0; }
+            .info-label { min-width: auto; display: block; margin-bottom: 0.2rem; font-size: 0.9rem; }
+            .story-section { margin-bottom: 2rem; }
+            .story-section h2 { font-size: 1.4rem; margin-bottom: 1rem; }
+            .letter-style { padding: 1.2rem; }
+            .letter-style::before { top: 10px; left: 10px; right: 10px; bottom: 10px; }
+            .story-text { font-size: 0.95rem; line-height: 1.6; }
+            .story-text p { margin-bottom: 0.8rem; }
+            .story-poem { padding: 0.8rem 1.2rem; font-size: 1rem; }
+            .student-credit-section p { font-size: 0.85rem; }
+            .hero-footer { padding: 1.2rem; margin-top: 2rem; border-radius: 15px; }
+            .hero-footer p { font-size: 1rem; }
+            .cloud { opacity: 0.2; }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-page-title { font-size: 1.4rem; margin-top: 4.5rem; }
+            .hero-content { padding: 1.2rem 0.8rem; }
+            .hero-photo { max-height: 300px; }
+            .photo-placeholder { max-width: 240px; height: 300px; font-size: 2.5rem; }
+            .info-item { font-size: 0.9rem; }
+            .story-text { font-size: 0.9rem; }
+            .story-poem { padding: 0.6rem 1rem; font-size: 0.9rem; }
+            .back-button { padding: 0.5rem 1rem; font-size: 0.8rem; top: 8px; left: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="clouds-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+    </div>
+    
+    <a href="/" class="back-button" onclick="sessionStorage.setItem('returnFromHero', 'true')">← Назад в небо памяти</a>
+    
+    <div class="container">
+        <h1 class="hero-page-title">Небо героя: Демонов Григорий Степанович</h1>
+        
+        <div class="hero-content">
+            <section class="photo-section">
+                <div class="photo-frame" id="photoFrame">
+                    <img src="/media/photos/demonov-grigoriy.jpg" alt="Демонов Григорий Степанович" class="hero-photo" id="heroPhoto" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="photo-placeholder" id="photoPlaceholder" style="display: none;">📷</div>
+                </div>
+            </section>
+            
+            <!-- Остальной контент без изменений -->
+            <section class="hero-info">
+                <h2>Информация о герое</h2>
+                <div class="info-item"><span class="info-label">Полное имя:</span><span>Демонов Григорий Степанович</span></div>
+                <div class="info-item"><span class="info-label">Годы жизни:</span><span>1926 – ???</span></div>
+                <div class="info-item"><span class="info-label">Звание:</span><span>???</span></div>
+                <div class="info-item"><span class="info-label">Награды:</span><span>Медаль «За освобождение Варшавы», Медаль «За освобождение Праги», Медаль «За Победу», Медаль «50 лет Победы в ВОВ»</span></div>
+                <div class="info-item"><span class="info-label">Боевой путь:</span><span>Варшава, Прага, Будапешт, Бухарест, Германия, Калининград, Западная Украина</span></div>
+            </section>
+            
+            <section class="story-section">
+                <h2>История героя</h2>
+                <div class="letter-style">
+                    <div class="story-text">
+                        <div class="story-poem">
+                            <p>Дыханьем я пламени коснусь. Держу свечу…<br>
+                            Чтобы слышали погибшие бойцы.<br>
+                            «Я уважаю вас. Своих детей я тоже научу,<br>
+                            Вы победили! Мы гордимся! Молодцы!»</p>
+                            <p>Бьётся в тесной печурке огонь,<br>
+                            На поленьях смола, как слеза.<br>
+                            И поёт мне в землянке гармонь<br>
+                            Про улыбку твою и глаза…</p>
+                        </div>
+                        
+                        <p>Эти слова песни очень подходили к сегодняшней обстановке. Атмосфера вечера навивала на меня мысли, о которых мало размышляют дети моего возраста. На кухне полумрак — опять плановое отключение электричества. На кухонном столе горит восковая свеча. Тишина… На морозном стекле зима выводит белоснежные узоры. Уже второй день стоят морозы, завывает холодный ветер. Только изредка раздаётся звяканье посуды — это моя бабушка наливает нам с мамой ароматный чай.</p>
+                        
+                        <p>Каждый такой вечер я, мама и бабушка собираемся за столом и слушаем различные истории. Но сегодня был какой-то особый вечер, хотелось поговорить о чём-то серьёзном и значимом. Из темноты на меня с теплотой смотрели глаза прадедушки. Мама сделала его портрет и повесила на стену. Очень часто я всматривалась в него и всё чаще находила близкие черты лица. Бабушка сделала глоток горячего чая и задумалась.</p>
+                        
+                        <p>Мы с мамой знали моего прадедушку только по рассказам моей бабушки. Мама была ещё очень маленькой, когда его не стало. Но из обрывков памяти она помнит его весёлым, добрым и хорошим человеком. Прадед любил играть с моей мамой и часто улыбался, но иногда были моменты, когда он задумывался о чём-либо. Прадедушка Григорий был участником войны. Когда моя бабушка была маленькая, он сажал её на колени и рассказывал про то, как он воевал. Она ещё тогда мало что понимала, но помнит его рассказы до сих пор, и мы попросили рассказать их нам.</p>
+                        
+                        <p>Война — это тяжёлое испытание для любого человека. Приходя, она уносит много жизней, лишает людей близких и любимых, убивает много талантов, разрушает города. Война забирает у людей то, что им особенно дорого.</p>
+                        
+                        <p>Бабушка сделала ещё один глоток и начала рассказ…</p>
+                        
+                        <p>«Твоего прадеда звали Демонов Григорий Степанович. Родился он 19 января 1926 года в Белгородской области, точнее уже и не помню. В семье у них было трое детей: старшая сестра Людмила, Григорий был средним ребёнком, младший брат Сергей. Отец прадеда, Степан, погиб под Сталинградом в 1942 году. Говорят, у него был очень красивый голос, и когда он пел, вся округа знала, что это поёт он».</p>
+                        
+                        <p>«Когда началась война, Григорий с двумя друзьями три раза пытались убежать на фронт. Они заранее прятали сухари и сало. Но все три раза их возвращали обратно. Тогда Гриша решил бежать сам: спрятав сухари, в один из моментов сел в эшелон к солдатам. Ему пришлось скрывать свой возраст. Солдаты помогли ему. На начало войны Григорий имел 8 классов образования. Он попал в военное училище под Челябинском, учился на ракетных установках. Когда немцы захватили их село, его друзья были расстреляны при попытке к бегству. Сестра и брат вместе с бабушкой прятались в погребах, а то и в воронках от снарядов».</p>
+                        
+                        <p>«В училище Григорий обучался где-то полгода, и потом его поставили на автомобильную прожекторную установку для боя, наряду с "Катюшей". Он прошёл Варшаву, Прагу, Будапешт, Бухарест, Германию, Калининград. После окончания войны в основном оставляли тех, кто помоложе. Прадеда направили в Западную Украину, где он находился по 1951 год. Там солдаты защищали территорию от бандеровцев. Далее он попадает на Урал, где оставляет военную службу».</p>
+                        
+                        <p>«Был один случай, когда власовцы пытались пройти в расположение, но Григорий вовремя это понял и поднял тревогу. Это спасло многим солдатам жизнь. Когда находились в Кёнигсберге (Калининград) и варили себе кашу, то кормили голодных немецких детей. На Западной Украине творились чудовищные расправы над людьми и детьми. На все вопросы о войне Григорий часто отвечал: "Лучше вам никогда этого не знать"».</p>
+                        
+                        <p>«Каждый год на 9 Мая, когда по телевизору начиналась трансляция праздничного парада, он уходил в комнату, погружался в свои воспоминания и плакал. У твоего прадеда было много наград: "За освобождение Варшавы и Праги", "За Победу", медали. Есть и медаль "50 лет Победы в ВОВ". Эта награда является примером независимости СССР и его жителей. Она стала одной из самых вручаемых в Советском Союзе».</p>
+                        
+                        <p>Закончив рассказ, бабушка вновь сделала глоток уже остывшего чая…</p>
+                        
+                        <p>Становилось жутко от мыслей, как же выживали люди в те страшные годы. В холоде, голоде, когда везде бомбёжки и в любую секунду может оборваться жизнь… Я поёжилась. На глаза наворачивались слёзы. Люди даже в те страшные моменты находили силы выжить, радовались каждой мелочи… радовались, что начинался новый день. Сейчас все настолько привыкли к комфорту, что в то время шансов бы выжить не было. А наши ветераны смогли… смогли выстоять в этой борьбе и выиграть у смерти.</p>
+                        
+                        <p>Свеча погасла. Включили свет. А ощущение тепла от фитилька свечи не проходило. Это «свет души» — тех душ, о которых мы вспомнили. Мой любимый прадедушка, светлая тебе память, ты наш герой! На День Победы портрет прадеда встанет вновь в ряды «Бессмертного полка».</p>
+                        
+                        <p style="text-align: center; font-weight: bold; font-size: 1.2rem;">«Помним. Любим. Гордимся».</p>
+                        
+                        <div class="story-poem">
+                            <p>Ты сейчас далеко-далеко,<br>
+                            Между нами снега и снега.<br>
+                            До тебя мне дойти нелегко,<br>
+                            А до смерти — четыре шага.<br>
+                            Пой, гармоника, вьюге назло,<br>
+                            Заплутавшее счастье зови.<br>
+                            Мне в холодной землянке тепло<br>
+                            От твоей негасимой любви.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="student-credit-section">
+                <p>История ученицы 10 класса Столыгво Анжелики</p>
+            </section>
+        </div>
+        
+        <div class="hero-footer">
+            <p>«Вечная память героям Великой Отечественной войны»</p>
+        </div>
+    </div>
+    
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img src="" alt="" id="lightboxImg">
+    </div>
+    
+    <script>
+        (function() {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initAll);
+            } else {
+                initAll();
+            }
+            function initAll() { initLightbox(); }
+            function initLightbox() {
+                var lightbox = document.getElementById('lightbox');
+                var lightboxImg = document.getElementById('lightboxImg');
+                var lightboxClose = document.getElementById('lightboxClose');
+                var photoFrame = document.getElementById('photoFrame');
+                if (!lightbox || !photoFrame) return;
+                photoFrame.addEventListener('click', function() {
+                    var img = document.getElementById('heroPhoto');
+                    if (img && img.style.display !== 'none') {
+                        lightboxImg.src = img.src;
+                        lightbox.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+                lightbox.addEventListener('click', function(e) {
+                    if (e.target === lightbox || e.target === lightboxClose) {
+                        lightbox.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                        lightbox.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
