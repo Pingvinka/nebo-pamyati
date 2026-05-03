@@ -62,7 +62,7 @@ function App() {
 
   const handleHeroClick = async (e: React.MouseEvent<HTMLAnchorElement>, file: string, name: string, heroId: number) => {
     e.preventDefault();
-    const url = `/heroes/${file}.html`;
+    const url = `${import.meta.env.BASE_URL}heroes/${file}.html`;
     
     try {
       const response = await fetch(url, { method: 'HEAD' });
@@ -318,7 +318,7 @@ function App() {
             <h1 className="main-title">ВЕЧНАЯ СЛАВА ГЕРОЯМ</h1>
             
             <a 
-              href="https://project-pamyat.netlify.app/" 
+              href="https://pingvinka.github.io/project_pamyati/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="class-cloud"
@@ -368,7 +368,7 @@ function App() {
                     <div className="hero-photo-icon"></div>
                     <h3 className="hero-name">{hero.name}</h3>
                     <a 
-                      href={`/heroes/${hero.file}.html`} 
+                      href={`${import.meta.env.BASE_URL}heroes/${hero.file}.html`}
                       className="hero-link"
                       onClick={(e) => handleHeroClick(e, hero.file, hero.name, hero.id)}
                     >
