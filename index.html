@@ -4,23 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Вечная Слава Героям ВОВ</title>
+    <script type="module" src="./src/main.tsx"></script>
   </head>
-  <script>
-  // Проверяем, вернулись ли мы со страницы героя
-  if (sessionStorage.getItem('returnFromHero') === 'true') {
-    sessionStorage.removeItem('returnFromHero');
-    // Ждём загрузки React и скроллим
-    setTimeout(function() {
-      var heroesSection = document.getElementById('heroes');
-      if (heroesSection) {
-        heroesSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 500);
-  }
-</script>
   <body>
     <div id="root"></div>
-    <!-- Вот эту строку нужно проверить: -->
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
